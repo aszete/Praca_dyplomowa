@@ -1,0 +1,9 @@
+-- Create schemas for medallion architecture
+CREATE SCHEMA bronze;
+GO
+
+CREATE SCHEMA silver;
+GO
+
+CREATE SCHEMA gold;
+GO
