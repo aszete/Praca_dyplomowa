@@ -4,15 +4,14 @@ CREATE TABLE bronze.customers (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    age INT NULL,
+    date_of_birth DATE NULL,
     gender CHAR(1) NULL,
-    join_date DATE NOT NULL,
+    join_date DATE NOT NULL
 );
 
 
 CREATE TABLE bronze.addresses (
     address_id INT NOT NULL,
-    customer_id INT NOT NULL,
     country VARCHAR(100) NOT NULL,
     city VARCHAR(100) NOT NULL,
     street VARCHAR(255) NOT NULL,
