@@ -1,4 +1,3 @@
-
 --customers
 CREATE TABLE bronze.customers (
     customer_id INT NOT NULL,
@@ -61,6 +60,7 @@ CREATE TABLE bronze.categories (
 CREATE TABLE bronze.products (
     product_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     name VARCHAR(255) NOT NULL,
+    description VARCHAR(1000) NULL,
     category_id INT NULL,
     brand_id INT NULL,
     list_price DECIMAL(18,2) NULL,
@@ -202,3 +202,38 @@ ON bronze.metadata(batch_id);
 -- ✅ Simpler design - Raw data, minimal optimization
 -- ✅ Lower storage - Indexes take up space
 -- ✅ Bronze is temporary - Data moves to silver quickly
+
+------------------------------------------------------
+
+-- And YES - add indexes to metadata tables because:
+
+-- They're queried frequently for monitoring
+-- They're small (won't slow down loads)
+-- They demonstrate understanding of when indexes are appropriate
+
+----------------------------------------------------------------
+
+-- IDENTITY(1,1)
+
+-- **What it does:** Auto-incrementing number generator, used for surrogate keys, audit/log tables
+
+-- - **First 1**: Start counting from 1
+-- - **Second 1**: Increment by 1 each time
+
+-- **Example:**
+-- ```
+-- Row 1: metadata_id = 1 (automatic)
+-- Row 2: metadata_id = 2 (automatic)
+-- Row 3: metadata_id = 3 (automatic)
+
+-------------------------------------------------------------------
+-- NONCLUSTERED
+-- What it does: Tells SQL Server how to physically store/organize data:
+    
+-- Data is NOT sorted by this column (in CLUSTERED it is sorted byt this column)
+-- Creates a separate lookup index (like a book's index)
+-- Can have many per table
+-- Faster for bulk inserts (no sorting needed) (CLUSTERED is slower for inserts (must maintain sort order)
+-- Slightly slower for queries (extra lookup step)
+
+
