@@ -1,4 +1,9 @@
 --customers
+IF OBJECT_ID('bronze.customers', 'U') IS NOT NULL
+    DROP TABLE bronze.customers;
+
+GO
+    
 CREATE TABLE bronze.customers (
     customer_id INT NOT NULL,
     first_name VARCHAR(100) NOT NULL,
@@ -11,14 +16,18 @@ CREATE TABLE bronze.customers (
     -- Source timestamps
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    -- ETL audit
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
-    load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
-    batch_id VARCHAR(50) NOT NULL,
+    -- ETL audit (Made NULLable for bulk loading)
+    load_date DATETIME2 NULL,
+    batch_id VARCHAR(50) NULL,
     PRIMARY KEY NONCLUSTERED (customer_id)
 );
 
 --addresses
+IF OBJECT_ID('bronze.addresses', 'U') IS NOT NULL
+    DROP TABLE bronze.addresses;
+
+GO
+
 CREATE TABLE bronze.addresses (
     address_id INT NOT NULL,
     country VARCHAR(100) NOT NULL,
@@ -27,36 +36,48 @@ CREATE TABLE bronze.addresses (
     postal_code VARCHAR(20) NOT NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL,
     PRIMARY KEY NONCLUSTERED (address_id)
 );
 
 -- brands
+IF OBJECT_ID('bronze.brands', 'U') IS NOT NULL
+    DROP TABLE bronze.brands;
+
+GO
+
 CREATE TABLE bronze.brands (
     brand_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     name VARCHAR(255) NOT NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- categories
+IF OBJECT_ID('bronze.categories', 'U') IS NOT NULL
+    DROP TABLE bronze.categories;
+
+GO
+    
 CREATE TABLE bronze.categories (
     category_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     name VARCHAR(255) NOT NULL,
     parent_category_id INT NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- products
+IF OBJECT_ID('bronze.products', 'U') IS NOT NULL
+    DROP TABLE bronze.products;
+
+GO
+    
 CREATE TABLE bronze.products (
     product_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     name VARCHAR(255) NOT NULL,
@@ -66,24 +87,32 @@ CREATE TABLE bronze.products (
     list_price DECIMAL(18,2) NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- payment methods
+IF OBJECT_ID('bronze.payment_methods', 'U') IS NOT NULL
+    DROP TABLE bronze.payment_methods;
+
+GO
+
 CREATE TABLE bronze.payment_methods (
     payment_method_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     payment_method_name VARCHAR(100) NOT NULL,
     is_active BIT NOT NULL DEFAULT 1,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- Orders
+IF OBJECT_ID('bronze.orders', 'U') IS NOT NULL
+    DROP TABLE bronze.orders;
+
+GO
+
 CREATE TABLE bronze.orders (
     order_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     customer_id INT NOT NULL,
@@ -98,12 +127,16 @@ CREATE TABLE bronze.orders (
     total_amount DECIMAL(18,2) NOT NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- Order Items
+IF OBJECT_ID('bronze.order_items', 'U') IS NOT NULL
+    DROP TABLE bronze.order_items;
+
+GO
+
 CREATE TABLE bronze.order_items (
     order_item_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     order_id INT NOT NULL,
@@ -114,12 +147,16 @@ CREATE TABLE bronze.order_items (
     tax_amount DECIMAL(18,2) NULL DEFAULT 0,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- Order Item Returns
+IF OBJECT_ID('bronze.order_item_returns', 'U') IS NOT NULL
+    DROP TABLE bronze.order_item_returns;
+
+GO
+
 CREATE TABLE bronze.order_item_returns (
     return_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     order_item_id INT NOT NULL,
@@ -129,12 +166,16 @@ CREATE TABLE bronze.order_item_returns (
     reason VARCHAR(255) NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- Website Sessions
+IF OBJECT_ID('bronze.website_sessions', 'U') IS NOT NULL
+    DROP TABLE bronze.website_sessions;
+
+GO
+
 CREATE TABLE bronze.website_sessions (
     website_session_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     created_at DATETIME2 NOT NULL,
@@ -145,18 +186,21 @@ CREATE TABLE bronze.website_sessions (
     utm_content VARCHAR(100) NULL,
     device_type VARCHAR(50) NULL,
     http_referer VARCHAR(255) NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
 
 -- Pageviews
+IF OBJECT_ID('bronze.pageviews', 'U') IS NOT NULL
+    DROP TABLE bronze.pageviews;
+
+GO
+
 CREATE TABLE bronze.pageviews (
     website_pageview_id INT NOT NULL PRIMARY KEY NONCLUSTERED,
     created_at DATETIME2 NOT NULL,
     website_session_id INT NOT NULL,
     pageview_url VARCHAR(255) NULL,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'OLTP_DB',
     load_date DATETIME2 NOT NULL DEFAULT GETDATE(),
     batch_id VARCHAR(50) NOT NULL
 );
