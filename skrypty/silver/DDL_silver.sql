@@ -18,6 +18,8 @@ CREATE TABLE silver.addresses (
     city NVARCHAR(100),
     street NVARCHAR(255),
     postal_code NVARCHAR(20),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -40,6 +42,8 @@ CREATE TABLE silver.customers (
     valid_from DATETIME2 NOT NULL,
     valid_to DATETIME2 NULL,
     is_current BIT NOT NULL DEFAULT 1,
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -56,6 +60,8 @@ CREATE TABLE silver.brands (
     brand_skey INT IDENTITY(1,1) PRIMARY KEY,
     brand_id INT NOT NULL,
     brand_name NVARCHAR(100),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -70,6 +76,8 @@ CREATE TABLE silver.categories (
     category_id INT NOT NULL,
     category_name NVARCHAR(255),
     parent_category_id INT NULL,
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -84,6 +92,8 @@ CREATE TABLE silver.payment_methods (
     payment_method_id INT NOT NULL,
     payment_method_name NVARCHAR(100),
     is_active BIT,
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -104,6 +114,8 @@ CREATE TABLE silver.products (
     valid_from DATETIME2 NOT NULL,
     valid_to DATETIME2 NULL,
     is_current BIT NOT NULL DEFAULT 1,
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -115,7 +127,7 @@ WHERE is_current = 1;
 GO
 
 -- ==========================================================
--- 2. Transactional Tables (Facts)
+-- 2. Fact Tables
 -- ==========================================================
 
 -- Silver Orders
@@ -134,6 +146,8 @@ CREATE TABLE silver.orders (
     tax_amount DECIMAL(18,2),
     shipping_amount DECIMAL(18,2),
     total_amount DECIMAL(18,2),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -153,6 +167,9 @@ CREATE TABLE silver.order_items (
     unit_price DECIMAL(18,2),
     discount_amount DECIMAL(18,2),
     tax_amount DECIMAL(18,2),
+    line_total DECIMAL(18,2),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -171,6 +188,8 @@ CREATE TABLE silver.order_item_returns (
     quantity_returned INT,
     refund_amount DECIMAL(18,2),
     reason NVARCHAR(MAX),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -186,11 +205,13 @@ CREATE TABLE silver.website_sessions (
     created_at DATETIME2,
     user_id INT,
     is_repeat_session BIT,
-    utm_source NVARCHAR(255),\
+    utm_source NVARCHAR(255),
     utm_campaign NVARCHAR(255),
     utm_content NVARCHAR(255),
     device_type NVARCHAR(50),
     http_referer NVARCHAR(255),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
@@ -206,6 +227,8 @@ CREATE TABLE silver.pageviews (
     created_at DATETIME2,
     website_session_id INT,
     pageview_url NVARCHAR(255),
+    source_created_at DATETIME2, 
+    source_updated_at DATETIME2,
     dwh_load_date DATETIME2 DEFAULT SYSDATETIME(),
     dwh_batch_id VARCHAR(50)
 );
