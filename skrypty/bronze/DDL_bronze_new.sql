@@ -220,41 +220,8 @@ CREATE TABLE bronze.metadata (
     created_at DATETIME2 NOT NULL DEFAULT GETDATE()
 );
 
--- Index for querying metadata by table
-CREATE INDEX IX_bronze_metadata_table_status 
-ON bronze.metadata(table_name, status, load_start_time DESC);
-
-CREATE INDEX IX_bronze_metadata_batch 
-ON bronze.metadata(batch_id);
-
-
 
 ---------------------------------------------------------------------    NOTES    -------------------------------------------------------------------------------
-
--- But use NONCLUSTERED PKs to avoid the overhead of maintaining a clustered index. ????????
------------------------------------------------------
--- Bronze should be:
--- - Fast to load (no index maintenance overhead)
--- - Append-only or full refresh
--- - Minimal transformations
--- - Just a staging area
----------------------------------------------------
--- Reasons to skip indexes in bronze:
-
--- ✅ Faster bulk inserts - No index maintenance during loads
--- ✅ Simpler design - Raw data, minimal optimization
--- ✅ Lower storage - Indexes take up space
--- ✅ Bronze is temporary - Data moves to silver quickly
-
-------------------------------------------------------
-
--- And YES - add indexes to metadata tables because:
-
--- They're queried frequently for monitoring
--- They're small (won't slow down loads)
--- They demonstrate understanding of when indexes are appropriate
-
-----------------------------------------------------------------
 
 -- IDENTITY(1,1)
 
@@ -269,14 +236,5 @@ ON bronze.metadata(batch_id);
 -- Row 2: metadata_id = 2 (automatic)
 -- Row 3: metadata_id = 3 (automatic)
 
--------------------------------------------------------------------
--- NONCLUSTERED
--- What it does: Tells SQL Server how to physically store/organize data:
-    
--- Data is NOT sorted by this column (in CLUSTERED it is sorted byt this column)
--- Creates a separate lookup index (like a book's index)
--- Can have many per table
--- Faster for bulk inserts (no sorting needed) (CLUSTERED is slower for inserts (must maintain sort order)
--- Slightly slower for queries (extra lookup step)
 
 
