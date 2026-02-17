@@ -12,12 +12,4 @@ BEGIN
         status VARCHAR(20),
         error_message NVARCHAR(MAX)
     );
-
-    -- Clustered Index on time for optimal sequential writes and chronological reads
-    CREATE CLUSTERED INDEX IX_gold_metadata_load_start_time 
-    ON gold.metadata (load_start_time DESC);
-
-    -- Non-Clustered Index for filtering by specific tables (e.g., checking dim_products history)
-    CREATE INDEX IX_gold_metadata_table_name 
-    ON gold.metadata (table_name);
 END;
