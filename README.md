@@ -1,4 +1,4 @@
-# Praca_dyplomowa
+# Praca dyplomowa
 
 Repozytorium pracy dyplomowej na kierunku **Big Data. Data Engineering**
 
