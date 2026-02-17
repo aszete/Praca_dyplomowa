@@ -16,5 +16,9 @@ praca_dyplomoes/
 ├── Docs/                               # Dodatkowe dokumenty, diagramy użyte w pracy
 │
 └── Skrypty/                            # Wszystkie skrypty T-SQL użyte w implementacji hurtowni danych
+    └── Bronze
+    └── Silver
+    └── Gold
+
 ```
 
