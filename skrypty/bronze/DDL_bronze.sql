@@ -18,8 +18,7 @@ CREATE TABLE bronze.customers (
     updated_at DATETIME2 NULL,
     -- ETL audit (Made NULLable for bulk loading)
     load_date DATETIME2 NULL,
-    batch_id VARCHAR(50) NULL,
-    PRIMARY KEY NONCLUSTERED (customer_id)
+    batch_id VARCHAR(50) NULL
 );
 
 --addresses
