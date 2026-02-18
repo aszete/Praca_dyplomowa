@@ -2,7 +2,7 @@
 
 Repozytorium pracy dyplomowej na kierunku **Big Data. Data Engineering**
 
-**Tytuł:** „Budowa hurtowni danych w środowisku Microsoft SQL Server z wykorzystaniem architektury medalion na przykładzie sklepu e-commerce”
+**Tytuł pracy:** „Budowa hurtowni danych w środowisku Microsoft SQL Server z wykorzystaniem architektury medalion na przykładzie sklepu e-commerce”
 
 **Autor:** Joanna Szeterlak
 
