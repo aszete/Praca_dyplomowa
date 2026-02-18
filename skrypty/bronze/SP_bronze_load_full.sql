@@ -34,7 +34,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- 1. Initialize Variables
+    -- 1. Zmienne
     DECLARE @start_time DATETIME2;
     DECLARE @row_count INT;
     DECLARE @table_name VARCHAR(100);
@@ -44,15 +44,14 @@ BEGIN
     IF @batch_id IS NULL
         SET @batch_id = 'BATCH_' + FORMAT(SYSDATETIME(), 'yyyyMMdd_HHmmss');
 
-    -- 2. Define the list of tables to load
-    -- You can easily add or remove tables here
+    -- 2. Zdefiniowanie tabel do załadowania
     DECLARE @tables TABLE (name VARCHAR(100));
     INSERT INTO @tables (name)
     VALUES ('customers'), ('addresses'), ('brands'), ('categories'), 
            ('products'), ('order_item_returns'), ('order_items'), 
            ('orders'), ('pageviews'), ('payment_methods'), ('website_sessions');
 
-    -- 3. Loop through each table
+    -- 3. Pętla przez każdą tabelę
     DECLARE table_cursor CURSOR FOR SELECT name FROM @tables;
     OPEN table_cursor;
     FETCH NEXT FROM table_cursor INTO @table_name;
@@ -65,11 +64,11 @@ BEGIN
         BEGIN TRY
             PRINT '>> Loading: bronze.' + @table_name;
 
-            -- Dynamic Truncate
+            -- Dynamiczny TRUNCATE
             SET @sql_command = 'TRUNCATE TABLE bronze.' + QUOTENAME(@table_name);
             EXEC sp_executesql @sql_command;
 
-            -- Dynamic Bulk Insert
+            -- Dynamiczny BULK INSERT
             SET @sql_command = '
                 BULK INSERT bronze.' + QUOTENAME(@table_name) + '
                 FROM ''' + @file_path + '''
@@ -82,25 +81,25 @@ BEGIN
                 );';
             EXEC sp_executesql @sql_command;
 
-            -- Dynamic Update for Batch Metadata
+            -- Dynamiczna aktualizacja kolumn audytu
             SET @sql_command = '
                 UPDATE bronze.' + QUOTENAME(@table_name) + '
                 SET batch_id = @b, load_date = GETDATE()
                 WHERE batch_id IS NULL;';
             EXEC sp_executesql @sql_command, N'@b VARCHAR(50)', @b = @batch_id;
 
-            -- Get Row Count
+            -- Ilość wierszy
             SET @sql_command = 'SELECT @rc = COUNT(*) FROM bronze.' + QUOTENAME(@table_name);
             EXEC sp_executesql @sql_command, N'@rc INT OUTPUT', @rc = @row_count OUTPUT;
 
-            -- Log Success
+            -- Zapisanie udanego ładowania w tabeli metadata
             INSERT INTO bronze.metadata (table_name, load_start_time, load_end_time, last_load_date, batch_id, row_count, status)
             VALUES (@table_name, @start_time, SYSDATETIME(), SYSDATETIME(), @batch_id, @row_count, 'Success');
 
             PRINT '    Rows Loaded: ' + CAST(@row_count AS VARCHAR);
         END TRY
         BEGIN CATCH
-            -- Log Failure
+            -- Zapisanie nieudanego ładowania w tabeli metadata
             INSERT INTO bronze.metadata (table_name, load_start_time, load_end_time, last_load_date, batch_id, status, error_message)
             VALUES (@table_name, @start_time, SYSDATETIME(), SYSDATETIME(), @batch_id, 'Failed', ERROR_MESSAGE());
             
