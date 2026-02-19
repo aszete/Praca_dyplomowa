@@ -51,7 +51,7 @@ BEGIN
            ('products'), ('order_item_returns'), ('order_items'), 
            ('orders'), ('pageviews'), ('payment_methods'), ('website_sessions');
 
-    -- 3. Pętla przez każdą tabelę
+    -- 3. Iteracja przez każdą tabelę
     DECLARE table_cursor CURSOR FOR SELECT name FROM @tables;
     OPEN table_cursor;
     FETCH NEXT FROM table_cursor INTO @table_name;
