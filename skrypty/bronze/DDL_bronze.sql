@@ -13,7 +13,6 @@ CREATE TABLE bronze.customers (
     gender VARCHAR(20) NULL,
     join_date DATE NOT NULL,
     address_id INT NULL,
-    -- Source timestamps
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
     -- ETL audit (Made NULLable for bulk loading)
