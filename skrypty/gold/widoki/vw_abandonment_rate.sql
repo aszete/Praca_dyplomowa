@@ -1,4 +1,4 @@
--- Widok przedstawiający wskaźnik porzucenia dla poszczególnych stron skepu internetowego
+-- Widok przedstawiający wskaźnik porzucenia dla poszczególnych stron sklepu internetowego
 
 CREATE OR ALTER VIEW vw_abandonment_rate AS
 SELECT 
