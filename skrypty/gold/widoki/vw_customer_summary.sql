@@ -1,3 +1,4 @@
+-- widok podsumowujący dane, aktywność i wartość klientów
 CREATE OR ALTER VIEW vw_customer_summary AS
 WITH customer_sessions AS (
     SELECT 
@@ -14,7 +15,7 @@ WITH customer_sessions AS (
         SELECT DISTINCT session_key, utm_campaign, device_type
         FROM gold.fact_web_analytics
     ) w ON fs.session_key = w.session_key
-    WHERE fs.customer_key <> -1  -- Exclude anonymous users
+    WHERE fs.customer_key <> -1
 )
 SELECT 
     cs.customer_key,
@@ -23,17 +24,17 @@ SELECT
     dc.country,
     dc.age_group,
     
-    -- Journey metrics
+    -- Journey
     cs.total_sessions,
     MAX(CASE WHEN cs.session_number = 1 THEN cs.utm_campaign END) AS first_campaign,
     MAX(CASE WHEN cs.session_number = 1 THEN cs.device_type END) AS first_device,
     MAX(CASE WHEN cs.resulted_in_sale = 1 THEN cs.utm_campaign END) AS converting_campaign,
     
-    -- Conversion info
+    -- Konwersja
     SUM(CASE WHEN cs.resulted_in_sale = 1 THEN 1 ELSE 0 END) AS sessions_with_purchase,
     MIN(CASE WHEN cs.resulted_in_sale = 1 THEN cs.session_number END) AS first_purchase_session,
     
-    -- Customer value
+    -- LTV
     SUM(s.total_amount) AS lifetime_value,
     COUNT(DISTINCT s.order_id) AS total_orders
 FROM customer_sessions cs
