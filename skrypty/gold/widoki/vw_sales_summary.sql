@@ -1,6 +1,6 @@
 -- Widok podsumowania sprzedaży według miesięcy
 
-CREATE OR ALTER VIEW gold.vw_sales_summary AS
+CREATE OR ALTER VIEW vw_sales_summary AS
 SELECT 
     dd.year,
     dd.month,
