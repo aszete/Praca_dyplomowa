@@ -6,20 +6,18 @@ BEGIN
     DECLARE @batch_start_time DATETIME2 = SYSDATETIME();
     DECLARE @TotalDuration INT;
     
-    PRINT '================================================';
-    PRINT '>>>          STARTING GOLD LAYER             <<<';
-    PRINT '================================================';
+    PRINT '>>>    START ORKIESTRATORA WARSTWY GOLD   	<<<';
 
     BEGIN TRY
-        -- Faza 1: Ładowanie tabeli wymiarów
-        PRINT 'Phase 1: Loading Dimension Tables...';
+        -- PHASE 1: Independent Dimensions
+        PRINT 'Phase 1: Ladowanie tabeli wymiarow...';
         EXEC gold.load_dim_date;
         EXEC gold.load_dim_time;
         EXEC gold.load_dim_customers;
         EXEC gold.load_dim_products;
 
-        -- Faza 2: Ładowanie tabeli faktów
-        PRINT 'Phase 4: Loading Fact Tables...';
+        -- PHASE 4: Fact Tables
+        PRINT 'Phase 4: Ladowanie tabel faktów...';
 		EXEC gold.load_fact_sessions;
         EXEC gold.load_fact_sales;
         EXEC gold.load_fact_web_analytics;
@@ -27,22 +25,20 @@ BEGIN
 
         SET @TotalDuration = DATEDIFF(SECOND, @batch_start_time, SYSDATETIME());
 
-        PRINT '================================================';
-        PRINT '>>>         LOADING GOLD SUCCESSFUL          <<<';
-        PRINT 'Duration: ' + CAST(@TotalDuration AS VARCHAR(10)) + ' seconds';
-        PRINT '================================================';
+        PRINT '>>>     SUKCES ŁADOWANIA WARSTWY GOLD        <<<';
+        PRINT 'Czas ladowania: ' + CAST(@TotalDuration AS VARCHAR(10)) + ' sekund';
 
     END TRY
     BEGIN CATCH
-        -- Wyłapanie komunikatu o błędzie
+
         DECLARE @ErrorMessage NVARCHAR(MAX) = ERROR_MESSAGE();
         
-        PRINT '!!! ERROR !!!';
+        PRINT 'ERROR';
         PRINT @ErrorMessage;
         
-        -- Zapisanie błędu w tabeli metadata
+        -- Ładowanie błędów do tabeli metadata
         EXEC gold.log_metadata 
-            @table_name = 'ORCHESTRATOR_FAILURE', 
+            @table_name = 'ORCHESTRATOR FAILURE', 
             @start_time = @batch_start_time, 
             @ins = 0, 
             @status = 'Error', 
