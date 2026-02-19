@@ -11,17 +11,14 @@ BEGIN
     PRINT '================================================';
 
     BEGIN TRY
-        -- PHASE 1: Independent Dimensions
-        PRINT 'Phase 1: Loading Date and Time...';
+        -- Faza 1: Ładowanie tabeli wymiarów
+        PRINT 'Phase 1: Loading Dimension Tables...';
         EXEC gold.load_dim_date;
         EXEC gold.load_dim_time;
-
-        -- PHASE 2: Master Dimensions
-        PRINT 'Phase 2: Loading Customers and Products...';
         EXEC gold.load_dim_customers;
         EXEC gold.load_dim_products;
 
-        -- PHASE 4: Fact Tables
+        -- Faza 2: Ładowanie tabeli faktów
         PRINT 'Phase 4: Loading Fact Tables...';
 		EXEC gold.load_fact_sessions;
         EXEC gold.load_fact_sales;
@@ -37,13 +34,13 @@ BEGIN
 
     END TRY
     BEGIN CATCH
-        -- Capture the error message immediately
+        -- Wyłapanie komunikatu o błędzie
         DECLARE @ErrorMessage NVARCHAR(MAX) = ERROR_MESSAGE();
         
         PRINT '!!! ERROR !!!';
         PRINT @ErrorMessage;
         
-        -- Log failure to metadata
+        -- Zapisanie błędu w tabeli metadata
         EXEC gold.log_metadata 
             @table_name = 'ORCHESTRATOR_FAILURE', 
             @start_time = @batch_start_time, 
