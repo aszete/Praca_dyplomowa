@@ -11,7 +11,7 @@ Autor: Joanna Szeterlak
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Cel projektu 🎯
+## Cel projektu
 
 Celem projektu było zaprojektowanie i implementacja hurtowni danych w środowisku Microsoft SQL Server z wykorzystaniem architektury warstwowej typu Medallion (Bronze → Silver → Gold).
 
@@ -27,7 +27,7 @@ Projekt obejmuje:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-🧱 ## Architektura rozwiązania
+## Architektura rozwiązania
 
 Projekt oparty jest na trójwarstwowej architekturze medalionu:
 
@@ -41,7 +41,7 @@ Diagramy architektury znajdują się w katalogu Docs/.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-🛠 ## Technologie
+## Technologie
 
 * Microsoft SQL Server
 
