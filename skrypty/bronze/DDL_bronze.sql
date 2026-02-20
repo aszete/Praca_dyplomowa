@@ -1,3 +1,9 @@
+/*
+===============================================================================
+Kod T-SQL tworzący tabele warstwy Bronze
+===============================================================================
+*/
+
 --customers
 IF OBJECT_ID('bronze.customers', 'U') IS NOT NULL
     DROP TABLE bronze.customers;
@@ -15,7 +21,6 @@ CREATE TABLE bronze.customers (
     address_id INT NULL,
     created_at DATETIME2 NULL,
     updated_at DATETIME2 NULL,
-    -- ETL audit (Made NULLable for bulk loading)
     load_date DATETIME2 NULL,
     batch_id VARCHAR(50) NULL
 );
@@ -117,7 +122,7 @@ CREATE TABLE bronze.orders (
     payment_method_id INT NULL,
     session_id INT NULL,
     order_status VARCHAR(50) NOT NULL,
-    subtotal_amount DECIMAL(18,2) NOT NULL,       -- amount without discounts, taxes
+    subtotal_amount DECIMAL(18,2) NOT NULL,
     discount_amount DECIMAL(18,2) NULL DEFAULT 0,
     tax_amount DECIMAL(18,2) NULL DEFAULT 0,
     shipping_amount DECIMAL(18,2) NULL DEFAULT 0,
@@ -212,7 +217,7 @@ CREATE TABLE bronze.metadata (
     last_load_date DATETIME2 NOT NULL,
     batch_id VARCHAR(50) NOT NULL,
     row_count INT NULL,
-    status VARCHAR(50) NOT NULL, -- 'Success', 'Failed', 'Running', 'Partial'
+    status VARCHAR(50) NOT NULL, 
     error_message VARCHAR(MAX) NULL,
     comments VARCHAR(255) NULL,
     created_at DATETIME2 NOT NULL DEFAULT GETDATE()
