@@ -43,15 +43,13 @@ Diagramy architektury znajdują się w katalogu Docs/.
 
 🛠 **Technologie**
 
-Microsoft SQL Server
+* Microsoft SQL Server
 
-T-SQL (procedury składowane, widoki, transformacje)
+* T-SQL (procedury składowane, widoki, transformacje)
 
-Architektura Medallion
+* Architektura Medallion
 
-Modelowanie wymiarowe (star schema)
-
-(opcjonalnie) Microsoft Power BI
+* Modelowanie wymiarowe (star schema)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
