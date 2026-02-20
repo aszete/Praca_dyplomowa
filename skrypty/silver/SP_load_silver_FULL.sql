@@ -3,27 +3,39 @@
 Procedura składowana: Ładowanie warstwy Silver - procedura nadrzędna
 ===============================================================================
 Cel:
-Procedura automatyzuje ładowanie danych z plików źródłowych OLTP 
-(pliki CSV) do warstwy Bronze. Dodatkowo rejestruje metryki łądowania w
-tabeli metadata.
+Procedura pełni rolę orkiestratora warstwy Silver:automatyzuje pełne ładowanie warstwy 
+Silver na podstawie danych z warstwy Bronze poprzez wywołanie procedur dla poszczególnych tabel. 
+Tabele podrzędne odpowiadają za transformację, czyszczenie, deduplikację oraz standaryzację 
+danych przed ich dalszym wykorzystaniem analitycznym.
 
-Procedura implementuje początkowy etap pobierania Medallion Architektura:
-Źródło OLTP → Bronze (surowy) → Silver (oczyszczony) → Gold (wymiarowy)
+Procedura realizuje drugi etap architektury Medallion:
+Źródło OLTP → Bronze (surowy) → Silver (oczyszczony, ustandaryzowany) → Gold (model analityczny)
+
+Działanie:
+1. Generuje identyfikator partii Silver (@silver_batch_id), jeśli nie został przekazany.
+2. Automatycznie wybiera ostatni poprawnie zakończony batch z warstwy Bronze,
+   jeśli nie podano @source_batch_id.
+3. Uruchamia sekwencyjnie procedury ładujące:
+   - Tabele wymiarów (Dimensions)
+   - Tabele faktów (Facts)
+4. Obsługuje błędy per tabela (TRY/CATCH), dzięki czemu pojedyncza awaria
+   nie przerywa całego procesu.
+5. Rejestruje metryki ładowania w tabeli silver.metadata.
+6. Zwraca podsumowanie procesu (status, liczba wierszy, czas trwania, błędy).
 
 Parametry:
-@batch_id VARCHAR(50) — opcjonalny identyfikator partii.
-                        Jeśli wartość jest równa NULL, generowany jest
-                        unikalny identyfikator na podstawie bieżącego
-                        znacznika czasu systemu.
+@silver_batch_id VARCHAR(50) — opcjonalny identyfikator partii Silver.
+                                Jeśli NULL, generowany automatycznie
+                                w formacie: SILVER_yyyyMMdd_HHmmss
 
-Sposób użycia:
--- Ładowanie wszystkich tabel z automatycznie wygenerowanym identyfikatorem:
+@source_batch_id VARCHAR(50) — opcjonalny identyfikator partii Bronze,
+                                która ma zostać przetworzona.
+                                Jeśli NULL, wybierany jest ostatni batch
+                                ze statusem 'Success'.
+                                Jeśli brak danych — używany 'INITIAL_LOAD'.
 
+-- Pełne ładowanie Silver na podstawie ostatniego poprawnego batcha Bronze:
 EXEC silver.load_full;
-
--- Ładowanie wybranych tabele z określonym identyfikatorem:
-
-EXEC silver.load_full @batch_id = 'BATCH_2024_001';
 ===============================================================================
 */
 
