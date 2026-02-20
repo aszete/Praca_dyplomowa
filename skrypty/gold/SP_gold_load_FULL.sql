@@ -3,27 +3,35 @@
 Procedura składowana (stored procedure): Ładowanie warstwy Gold
 ===============================================================================
 Cel:
-Procedura automatyzuje ładowanie surowych danych z plików źródłowych OLTP 
-(pliki CSV) do warstwy Bronze. Dodatkowo rejestruje metryki łądowania w
-tabeli metadata.
+Procedura pełni rolę orkiestratora warstwy Gold i odpowiada za budowę
+docelowego modelu analitycznego (model gwiazdy) na podstawie danych
+przygotowanych w warstwie Silver.
 
-Procedura implementuje ostatni etap Medallion Architektura:
+Warstwa Gold zawiera:
+- Tabele wymiarów (Dimension Tables)
+- Tabele faktów (Fact Tables)
+Gotowe do raportowania w narzędziach BI (np. Power BI).
+
+Procedura implementuje ostatni etap architektury Medallion:
 Źródło OLTP → Bronze (surowy) → Silver (oczyszczony) → Gold (wymiarowy)
 
-Parametry:
-@batch_id VARCHAR(50) — opcjonalny identyfikator partii.
-                        Jeśli wartość jest równa NULL, generowany jest
-                        unikalny identyfikator na podstawie bieżącego
-                        znacznika czasu systemu.
+Działanie:
+1. Rejestruje czas rozpoczęcia ładowania.
+2. Uruchamia procedury ładujące:
+   - Niezależne wymiary (Date, Time, Customers, Products)
+   - Tabele faktów (Sessions, Sales, Web Analytics, Returns)
+3. Mierzy całkowity czas wykonania procesu.
+4. W przypadku błędu:
+   - Przechwytuje wyjątek (TRY/CATCH),
+   - Loguje informację do tabeli gold.metadata,
+   - Rzuca wyjątek ponownie (THROW), aby powiadomić narzędzia
+     orkiestrujące (np. SQL Agent, Azure Data Factory).
 
 Sposób użycia:
--- Ładowanie wszystkich tabel z automatycznie wygenerowanym identyfikatorem:
 
-EXEC bronze.load_bronze;
+-- Pełne ładowanie warstwy Gold:
 
--- Ładowanie wybranych tabele z określonym identyfikatorem:
-
-EXEC bronze.load_bronze @batch_id = 'BATCH_2024_001';
+EXEC gold.load_full;
 ===============================================================================
 */
 
