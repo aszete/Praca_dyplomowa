@@ -1,4 +1,4 @@
-** Praca dyplomowa **
+* Praca dyplomowa *
 
 Repozytorium zawiera projekt hurtowni danych zrealizowany w ramach pracy dyplomowej na kierunku Big Data. Data Engineering.
 
@@ -47,3 +47,15 @@ Silver – warstwa transformacji i oczyszczania danych
 Gold – warstwa analityczna (model gwiazdy + widoki)
 
 Diagramy architektury znajdują się w katalogu Docs/.
+
+🛠 **Technologie**
+
+Microsoft SQL Server
+
+T-SQL (procedury składowane, widoki, transformacje)
+
+Architektura Medallion
+
+Modelowanie wymiarowe (star schema)
+
+(opcjonalnie) Microsoft Power BI
