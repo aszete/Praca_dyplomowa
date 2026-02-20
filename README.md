@@ -1,4 +1,4 @@
-*Praca dyplomowa*
+***Praca dyplomowa***
 
 Repozytorium zawiera projekt hurtowni danych zrealizowany w ramach pracy dyplomowej na kierunku Big Data. Data Engineering.
 
