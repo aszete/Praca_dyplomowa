@@ -1,4 +1,8 @@
--- Kod T-SQL tabeli metadata w warstwie Gold
+/*
+===============================================================================
+Kod T-SQL tabeli metadata w warstwie Gold
+===============================================================================
+*/
     
 IF OBJECT_ID('gold.metadata') IS NULL
 BEGIN
