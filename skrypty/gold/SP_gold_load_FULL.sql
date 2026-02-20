@@ -1,3 +1,33 @@
+/*
+===============================================================================
+Procedura składowana (stored procedure): Ładowanie warstwy Gold
+===============================================================================
+Cel:
+Procedura automatyzuje ładowanie surowych danych z plików źródłowych OLTP 
+(pliki CSV) do warstwy Bronze. Dodatkowo rejestruje metryki łądowania w
+tabeli metadata.
+
+Procedura implementuje ostatni etap Medallion Architektura:
+Źródło OLTP → Bronze (surowy) → Silver (oczyszczony) → Gold (wymiarowy)
+
+Parametry:
+@batch_id VARCHAR(50) — opcjonalny identyfikator partii.
+                        Jeśli wartość jest równa NULL, generowany jest
+                        unikalny identyfikator na podstawie bieżącego
+                        znacznika czasu systemu.
+
+Sposób użycia:
+-- Ładowanie wszystkich tabel z automatycznie wygenerowanym identyfikatorem:
+
+EXEC bronze.load_bronze;
+
+-- Ładowanie wybranych tabele z określonym identyfikatorem:
+
+EXEC bronze.load_bronze @batch_id = 'BATCH_2024_001';
+===============================================================================
+*/
+
+
 CREATE OR ALTER PROCEDURE gold.load_full
 AS
 BEGIN
