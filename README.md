@@ -9,6 +9,52 @@ Informacje o pracy
 
 Autor: Joanna Szeterlak
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🎯 **Cel projektu**
+
+Celem projektu było zaprojektowanie i implementacja hurtowni danych w środowisku Microsoft SQL Server z wykorzystaniem architektury warstwowej typu Medallion (Bronze → Silver → Gold).
+
+Projekt obejmuje:
+
+→ implementację procesów ETL w T-SQL,
+
+→ budowę modelu gwiazdy (star schema) w warstwie analitycznej,
+
+→ zastosowanie mechanizmów kontroli jakości danych,
+
+→ przygotowanie widoków analitycznych przeznaczonych do raportowania (np. Power BI).
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🧱 **Architektura rozwiązania**
+
+Projekt oparty jest na trójwarstwowej architekturze medalionu:
+
+Bronze – warstwa danych surowych (ładowanie plików CSV)
+
+Silver – warstwa transformacji i oczyszczania danych
+
+Gold – warstwa analityczna (model gwiazdy + widoki)
+
+Diagramy architektury znajdują się w katalogu Docs/.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🛠 **Technologie**
+
+Microsoft SQL Server
+
+T-SQL (procedury składowane, widoki, transformacje)
+
+Architektura Medallion
+
+Modelowanie wymiarowe (star schema)
+
+(opcjonalnie) Microsoft Power BI
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ## 📂 Struktura repozytorium
 ```
 Praca_dyplomoes/
@@ -27,35 +73,3 @@ Praca_dyplomoes/
         └── widoki                      # Utworzone widoki analityczne
 ```
 
-🎯 **Cel projektu**
-
-Celem projektu było zaprojektowanie i implementacja hurtowni danych w środowisku Microsoft SQL Server z wykorzystaniem architektury warstwowej typu Medallion (Bronze → Silver → Gold).
-
-Projekt obejmuje:
-
-→ implementację procesów ETL w T-SQL,
-→ budowę modelu gwiazdy (star schema) w warstwie analitycznej,
-→ zastosowanie mechanizmów kontroli jakości danych,
-→ przygotowanie widoków analitycznych przeznaczonych do raportowania (np. Power BI).
-
-🧱 **Architektura rozwiązania**
-
-Projekt oparty jest na trójwarstwowej architekturze:
-
-Bronze – warstwa danych surowych (ładowanie plików CSV)
-Silver – warstwa transformacji i oczyszczania danych
-Gold – warstwa analityczna (model gwiazdy + widoki)
-
-Diagramy architektury znajdują się w katalogu Docs/.
-
-🛠 **Technologie**
-
-Microsoft SQL Server
-
-T-SQL (procedury składowane, widoki, transformacje)
-
-Architektura Medallion
-
-Modelowanie wymiarowe (star schema)
-
-(opcjonalnie) Microsoft Power BI
