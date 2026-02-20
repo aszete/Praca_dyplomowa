@@ -1,12 +1,8 @@
 /*
 ===============================================================================
-SILVER LAYER SCHEMA DEFINITION
+Kod T-SQL tworzący tabele warstwy Silver
 ===============================================================================
 */
-
--- ==========================================================
--- 1. Reference & Dimension Tables
--- ==========================================================
 
 -- Silver Addresses (SCD Type 1)
 IF OBJECT_ID('silver.addresses', 'U') IS NOT NULL DROP TABLE silver.addresses;
