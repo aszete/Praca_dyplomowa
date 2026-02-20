@@ -17,12 +17,12 @@ Praca_dyplomoes/
 │
 └── Skrypty/                            # Wszystkie skrypty T-SQL użyte w implementacji hurtowni danych
     |
-    └── Bronze
-    └── Silver
-        └── procedury czesciowe
-    └── Gold
-        └── procedury czesciowe
-        └── widoki
+    └── Bronze                          # Kod DDL oraz procedura składowana
+    └── Silver                          # Kod DDL oraz procedury składowane
+        └── procedury czesciowe         # Procedury dla poszczególnych tabel w warstwie Silver
+    └── Gold                            # Kod DDL oraz procedury składowane
+        └── procedury czesciowe         # Procedury dla poszczególnych tabel w warstwie Gold
+        └── widoki                      # Utworzone widoki analityczne
 
 ```
 
